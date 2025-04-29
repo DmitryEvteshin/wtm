@@ -172,6 +172,7 @@ SELECT
     , operation
     , weight
     , net_weight_fact
+    , exists_in_categories
     , done
 FROM
     (
@@ -277,9 +278,7 @@ SELECT
     , technical_process
     , operation
     , category
-    , 0 AS amount
     , weight
-    , 0 AS amount_fact
     , net_weight_fact AS weight_fact
     , done
 FROM
