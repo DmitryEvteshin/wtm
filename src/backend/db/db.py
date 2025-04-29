@@ -182,7 +182,12 @@ FROM
 ORDER BY
     doc_id
     , material
-    , category
+	, CASE
+	WHEN REPLACE(category, ',', '.') REGEXP '^-?[0-9]+(\\.[0-9]+)?$' THEN
+	CAST(REPLACE(category, ',', '.') AS DECIMAL(10, 3))
+	ELSE 0
+	END,
+	category ASC
     """
     
     result = []
@@ -285,7 +290,12 @@ FROM
     ) toc
 ORDER BY
     doc_id ASC
-    , category ASC
+	, CASE
+	WHEN REPLACE(category, ',', '.') REGEXP '^-?[0-9]+(\\.[0-9]+)?$' THEN
+	CAST(REPLACE(category, ',', '.') AS DECIMAL(10, 3))
+	ELSE 0
+	END,
+	category ASC
     """
 
     result = []
