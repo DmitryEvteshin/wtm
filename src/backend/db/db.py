@@ -553,38 +553,45 @@ async def update_job_status(conn: Connection, doc_id: int, user_id: int, materia
     # if can_done is False:
     #     raise Exception("Превышение веса")
 
-    q = """
-UPDATE
-    production_task
-SET
-    done = %(status)s
-    , net_weight_fact = CASE WHEN %(status)s IS TRUE THEN %(net_weight_fact)s ELSE 0 END
-    , tare_amount_fact = CASE WHEN %(status)s IS TRUE AND (%(net_weight_fact)s = net_weight OR net_weight = 0) THEN 1 ELSE 0 END
-    , fact_executor = CASE WHEN %(status)s IS TRUE THEN %(user_id)s ELSE 0 END
-    , add_processing_id = CASE WHEN %(status)s IS TRUE THEN %(add_processing_id)s ELSE 0 END
-WHERE
-    material = %(material_id)s
-    AND
-    doc_id = %(doc_id)s
-    AND
-    tare_id = %(tara_id)s
-    """
-    query_args = {
-        "doc_id": doc_id,
-        "user_id": user_id,
-        "material_id": material_id,
-        "tara_id": tara_id,
-        "status": status,
-        "net_weight_fact": net_weight_fact,
-        "add_processing_id": add_processing_id
-    }
-    async with conn.cursor() as cur:
-        await cur.execute(q, query_args)
-        # На всякий случай перехват ошибки, чтобы совсем не падать
-        try:
-            await cur.callproc("update_next_process_v2", [doc_id, material_id, tara_id])
-        except Exception as e:
-            print(f"ERROR callproc \"update_next_process\": {e}")
+#     q = """
+# UPDATE
+#     production_task
+# SET
+#     done = %(status)s
+#     , net_weight_fact = CASE WHEN %(status)s IS TRUE THEN %(net_weight_fact)s ELSE 0 END
+#     , tare_amount_fact = CASE WHEN %(status)s IS TRUE AND (%(net_weight_fact)s = net_weight OR net_weight = 0) THEN 1 ELSE 0 END
+#     , fact_executor = CASE WHEN %(status)s IS TRUE THEN %(user_id)s ELSE 0 END
+#     , add_processing_id = CASE WHEN %(status)s IS TRUE THEN %(add_processing_id)s ELSE 0 END
+# WHERE
+#     material = %(material_id)s
+#     AND
+#     doc_id = %(doc_id)s
+#     AND
+#     tare_id = %(tara_id)s
+#     """
+#     query_args = {
+#         "doc_id": doc_id,
+#         "user_id": user_id,
+#         "material_id": material_id,
+#         "tara_id": tara_id,
+#         "status": status,
+#         "net_weight_fact": net_weight_fact,
+#         "add_processing_id": add_processing_id
+#     }
+#     async with conn.cursor() as cur:
+#         await cur.execute(q, query_args)
+#         # На всякий случай перехват ошибки, чтобы совсем не падать
+#         try:
+#             await cur.callproc("update_next_process_v2", [doc_id, material_id, tara_id])
+#         except Exception as e:
+#             print(f"ERROR callproc \"update_next_process\": {e}")
+#     return
+
+    try:
+        async with conn.cursor() as cur:
+            await cur.callproc("app_update_job_status", [doc_id, user_id, material_id, tara_id, net_weight_fact, add_processing_id, status])
+    except Exception as e:
+        print(f"ERROR callproc \"app_update_job_status\": {e}")
     return
 
 
