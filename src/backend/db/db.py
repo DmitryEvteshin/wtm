@@ -382,13 +382,6 @@ FROM
 """
     task_weights: list[dict] = []
 
-    # try:
-    #     await cur.callproc("app_get_task_weight_table", [doc_id, material_id])
-    # except Exception as e:
-    #     print(f"ERROR callproc \"app_get_task_weight_table\": {e}")
-    #     task_weights = []
-    #     return task_weights    
-    
     async with conn.cursor() as cur:
         await cur.execute(q1)
         task_weights = await cur.fetchall()
@@ -587,11 +580,15 @@ async def update_job_status(conn: Connection, doc_id: int, user_id: int, materia
 #             print(f"ERROR callproc \"update_next_process\": {e}")
 #     return
 
-    try:
-        async with conn.cursor() as cur:
+    q = """
+
+    """
+
+    async with conn.cursor() as cur:
+        try:
             await cur.callproc("app_update_job_status", [doc_id, user_id, material_id, tara_id, net_weight_fact, add_processing_id, status])
-    except Exception as e:
-        print(f"ERROR callproc \"app_update_job_status\": {e}")
+        except Exception as e:
+            print(f"ERROR callproc \"app_update_job_status\": {e}")
     return
 
 
