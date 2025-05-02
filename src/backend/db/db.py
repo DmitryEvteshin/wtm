@@ -562,15 +562,15 @@ async def update_job_status(conn: Connection, doc_id: int, user_id: int, materia
 #     AND
 #     tare_id = %(tara_id)s
 #     """
-    query_args = {
-         "doc_id": doc_id,
-         "user_id": user_id,
-         "material_id": material_id,
-         "tara_id": tara_id,
-         "status": status,
-         "net_weight_fact": net_weight_fact,
-         "add_processing_id": add_processing_id
-    }
+    # query_args = {
+    #      "doc_id": doc_id,
+    #      "user_id": user_id,
+    #      "material_id": material_id,
+    #      "tara_id": tara_id,
+    #      "status": status,
+    #      "net_weight_fact": net_weight_fact,
+    #      "add_processing_id": add_processing_id
+    # }
 
 #     async with conn.cursor() as cur:
 #         await cur.execute(q, query_args)
@@ -581,16 +581,8 @@ async def update_job_status(conn: Connection, doc_id: int, user_id: int, materia
 #             print(f"ERROR callproc \"update_next_process\": {e}")
 #     return
 
-    q = """
-    	CREATE TABLE tmp_debug AS
-		(
-		SELECT %(doc_id)s
-		);
-    """
-
     async with conn.cursor() as cur:
         try:
-            await cur.execute(q, doc_id)
             await cur.callproc("app_update_job_status", [doc_id, user_id, material_id, tara_id, net_weight_fact, add_processing_id, status])
         except Exception as e:
             print(f"ERROR callproc \"app_update_job_status\": {e}")
