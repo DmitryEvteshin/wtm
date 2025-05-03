@@ -20,6 +20,6 @@ jobs:
     - name: Push image
       run: |
         IMAGE_NAME=wtm
-        IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
+        IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME:test
         docker tag $IMAGE_NAME $IMAGE_ID
         docker push $IMAGE_ID
