@@ -190,13 +190,13 @@ ORDER BY
     """
     
     result = []
-    try:
-        await cur.callproc("app_get_operator_task_table", [user_id, stock_id])
-    except Exception as e:
-        print(f"ERROR callproc \"app_get_operator_task_table\": {e}")
-        return result    
     
     async with conn.cursor() as cur:
+        try:
+            await cur.callproc("app_get_operator_task_table", [user_id, stock_id])
+        except Exception as e:
+            print(f"ERROR callproc \"app_get_operator_task_table\": {e}")
+            return result    
         await cur.execute(q)
         result = await cur.fetchall()
         if isinstance(result, tuple):
@@ -233,13 +233,13 @@ ORDER BY
 
     result = []
    
-    try:
-        await cur.callproc("app_get_operator_task_table", [user_id, stock_id])
-    except Exception as e:
-        print(f"ERROR callproc \"app_get_operator_task_table\": {e}")
-        return result    
     
     async with conn.cursor() as cur:
+        try:
+            await cur.callproc("app_get_operator_task_table", [user_id, stock_id])
+        except Exception as e:
+            print(f"ERROR callproc \"app_get_operator_task_table\": {e}")
+            return result    
         await cur.execute(q)
         result = await cur.fetchall()
         if isinstance(result, tuple):
