@@ -4,170 +4,15 @@ from aiomysql import Connection
 
 async def get_operator_tasks_table(conn: Connection, user_id: int, stock_id: int):
     
-    async with conn.cursor() as cur:
-        try:
-            await cur.callproc("app_get_operator_task_table", [user_id, stock_id])
-        except Exception as e:
-            print(f"ERROR callproc \"app_get_operator_task_table\": {e}")
+    # async with conn.cursor() as cur:
+    #     try:
+    #         await cur.callproc("app_get_operator_task_table", [user_id, stock_id])
+    #     except Exception as e:
+    #         print(f"ERROR callproc \"app_get_operator_task_table\": {e}")
     return 
 
 async def select_tasks(conn: Connection, user_id: int, stock_id: int) -> list:
     """ получение списка заданий """
-#     q = """
-# SELECT
-#     doc_id
-#     , material_id
-#     , material
-#     , category
-#     , planned_date
-#     , technical_process
-#     , operation
-#     , tare_amount
-#     , task_weight AS weight
-#     , tare_amount_fact
-#     , net_weight_fact
-#     , IF(
-#         task_weight > 0
-#         , IF(
-#             net_weight_fact >= task_weight
-#             , 1
-#             , 0
-#         )
-#         , cat_done
-#     ) AS done
-# FROM
-#     (
-#         SELECT
-#             doc_id
-#             , material_id
-#             , material
-#             , category
-#             , planned_date
-#             , technical_process
-#             , operation
-#             , tare_amount
-#             , IF(
-#                 task_weight_category = 0
-#                 , IF(
-#                     task_weight_material = 0
-#                     , net_weight
-#                     , task_weight_material
-#                 )
-#                 , 0
-#             ) AS task_weight
-#             , tare_amount_fact
-#             , net_weight_fact
-#             , cat_done
-#         FROM
-#             (
-#                 SELECT
-#                     ptm.doc_id
-#                     , ptm.material AS material_id
-#                     , m.material
-#                     , ptm.category
-#                     , pt.planned_date
-#                     , pt.technical_process
-#                     , pt.operation
-#                     , ptm.task_weight AS task_weight_material
-#                     , IFNULL(ptc.task_weight, 0) AS task_weight_category
-#                     , pt.tare_amount
-#                     , pt.net_weight
-#                     , pt.tare_amount_fact
-#                     , pt.net_weight_fact
-#                 FROM
-#                     production_task_materials AS ptm
-#                 LEFT JOIN production_task_categories AS ptc ON
-#                     ptm.doc_id = ptc.doc_id
-#                     AND ptm.category = ptc.category
-#                 LEFT JOIN material AS m ON
-#                     m.id = ptm.material
-#                 INNER JOIN
-#                 (
-#                     SELECT
-#                         pt.doc_id
-#                         , material
-#                         , category
-#                         , ptd.planned_date AS planned_date
-#                         , ptd.technical_process AS technical_process
-#                         , ptd.operation AS operation
-#                         , SUM(tare_amount) AS tare_amount
-#                         , SUM(net_weight) AS net_weight
-#                         , SUM(tare_amount_fact) AS tare_amount_fact
-#                         , SUM(net_weight_fact) AS net_weight_fact
-#                     FROM
-#                         production_task AS pt
-#                     LEFT JOIN production_task_doc AS ptd ON
-#                         ptd.id = pt.doc_id
-#                     LEFT JOIN production_task_executor AS pte ON
-#                         pte.doc_id = pt.doc_id
-#                     WHERE
-#                         pte.executor_id = %(user_id)s
-#                         AND ptd.done = 0
-#                     GROUP BY
-#                         doc_id
-#                         , material
-#                         , category
-#                         , planned_date
-#                         , technical_process
-#                         , operation
-#                 ) pt ON
-#                 pt.doc_id = ptm.doc_id
-#                 AND pt.material = ptm.material
-#                 AND pt.category = ptm.category
-#             ) task_list
-#         LEFT JOIN
-#         (
-#                 SELECT
-#                     subq.doc_id AS cat_doc_id
-#                     , subq.category AS cat_category
-#                     , IF(
-#                         subq.weight_fact >= ptc.task_weight
-#                         , 1
-#                         , 0
-#                     ) AS cat_done
-#                 FROM
-#                     (
-#                         SELECT
-#                             doc.id AS doc_id
-#                             , pt.category
-#                             , SUM(pt.net_weight) AS weight
-#                             , SUM(pt.net_weight_fact) AS weight_fact
-#                         FROM
-#                             production_task pt
-#                         INNER JOIN production_task_doc AS doc ON
-#                             doc.id = pt.doc_id
-#                             AND
-#                             doc.stock = %(stock_id)s
-#                         LEFT JOIN material AS m ON
-#                             m.id = pt.material
-#                         INNER JOIN production_task_executor pte ON
-#                             pte.doc_id = doc.id
-#                         WHERE
-#                             pte.executor_id = %(user_id)s
-#                             AND
-#                             doc.done = 0
-#                         GROUP BY
-#                             doc.id
-#                             , doc.doc_number
-#                             , doc.planned_date
-#                             , doc.technical_process
-#                             , doc.operation
-#                             , pt.category
-#                     ) AS subq
-#                 INNER JOIN production_task_categories ptc ON
-#                     ptc.doc_id = subq.doc_id
-#                     AND ptc.category = subq.category
-#                     AND ptc.task_weight > 0
-#             ) cat ON
-#             cat.cat_doc_id = task_list.doc_id
-#             AND
-#             cat.cat_category = task_list.category
-#     ) task_list
-# ORDER BY
-#     doc_id
-#     , material
-#     , category
-#     """
 
     q = """
 SELECT
@@ -240,7 +85,6 @@ ORDER BY
     """
 
     result = []
-   
     
     async with conn.cursor() as cur:
         try:
