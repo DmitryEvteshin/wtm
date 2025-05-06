@@ -2,14 +2,14 @@
 
 from aiomysql import Connection
 
-async def get_operator_tasks_table(conn: Connection, user_id: int, stock_id: int) -> list:
+async def get_operator_tasks_table(conn: Connection, user_id: int, stock_id: int):
     
-    async with conn.cursor() as cur:
-        try:
-            await cur.callproc("app_get_operator_task_table", [user_id, stock_id])
-        except Exception as e:
-            print(f"ERROR callproc \"app_get_operator_task_table\": {e}")
-    return []
+#    async with conn.cursor() as cur:
+#        try:
+#            await cur.callproc("app_get_operator_task_table", [user_id, stock_id])
+#        except Exception as e:
+#            print(f"ERROR callproc \"app_get_operator_task_table\": {e}")
+    return
 
 async def select_tasks(conn: Connection, user_id: int, stock_id: int) -> list:
     """ получение списка заданий """
@@ -45,11 +45,11 @@ ORDER BY
     result = []
     
     async with conn.cursor() as cur:
-#        try:
-#            await cur.callproc("app_get_operator_task_table", [user_id, stock_id])
-#        except Exception as e:
-#            print(f"ERROR callproc \"app_get_operator_task_table\": {e}")
-#            return result    
+        try:
+            await cur.callproc("app_get_operator_task_table", [user_id, stock_id])
+        except Exception as e:
+            print(f"ERROR callproc \"app_get_operator_task_table\": {e}")
+            return result    
         await cur.execute(q)
         result = await cur.fetchall()
         if isinstance(result, tuple):
@@ -87,11 +87,11 @@ ORDER BY
     result = []
     
     async with conn.cursor() as cur:
-#        try:
-#            await cur.callproc("app_get_operator_task_table", [user_id, stock_id])
-#        except Exception as e:
-#            print(f"ERROR callproc \"app_get_operator_task_table\": {e}")
-#            return result    
+        try:
+            await cur.callproc("app_get_operator_task_table", [user_id, stock_id])
+        except Exception as e:
+            print(f"ERROR callproc \"app_get_operator_task_table\": {e}")
+            return result    
         await cur.execute(q)
         result = await cur.fetchall()
         if isinstance(result, tuple):
@@ -159,18 +159,18 @@ async def select_processing_types(conn: Connection):
 
 async def select_task(conn: Connection, stock_id: int, doc_id: int, material_id: int, user_id: int):
     """ получение позиций задания """
- #   async with conn.cursor() as cur:
- #       try:
- #           await cur.callproc("app_get_task_table", [doc_id, material_id])
- #       except Exception as e:
- #           print(f"ERROR callproc \"app_get_task_table\": {e}")
- #           return None    
+    async with conn.cursor() as cur:
+        try:
+            await cur.callproc("app_get_task_table", [doc_id, material_id])
+        except Exception as e:
+            print(f"ERROR callproc \"app_get_task_table\": {e}")
+            return None    
 
     task = await select_task_meta(conn, stock_id, doc_id, material_id)
     if task is None:
         return task
 
-  #  task["task_weights"] = await get_task_weights(conn, doc_id, material_id, user_id)
+    task["task_weights"] = await get_task_weights(conn, doc_id, material_id, user_id)
     task["processing_types"] = await select_processing_types(conn)
 
     q = """
