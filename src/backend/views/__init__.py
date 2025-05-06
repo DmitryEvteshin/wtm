@@ -37,6 +37,7 @@ def setup_handlers(app: Application):
         ("GET", "/api/stocks", get_stocks, "get_stocks"),
         ("GET", "/api/stock/{stockID}/tasks", get_tasks, "get_tasks"),
         ("GET", "/api/stock/{stockID}/tasks_progress", tasks_progress, "tasks_progress"),
+        ("GET", "/api/stock/{stockID}/prepare_task_table", prepare_task_table, "prepare_task_table"),
         ("GET", "/api/stock/{stockID}/task/{taskID}/material/{materialID}",
          get_task, "get_task"),
         ("PUT", "/api/rest_gross_weight", rest_gross_weight, "rest_gross_weight")

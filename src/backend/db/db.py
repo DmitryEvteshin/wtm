@@ -9,6 +9,7 @@ async def get_operator_tasks_table(conn: Connection, user_id: int, stock_id: int
 #            await cur.callproc("app_get_operator_task_table", [user_id, stock_id])
 #        except Exception as e:
 #            print(f"ERROR callproc \"app_get_operator_task_table\": {e}")
+    print(f"select_tasks {user_id}, {stock_id}")
     return
 
 async def select_tasks(conn: Connection, user_id: int, stock_id: int) -> list:
