@@ -41,7 +41,7 @@ ORDER BY
 	END,
 	category ASC
     """
-    print(f"{user_id}, {stock_id}")
+    print(f"select_tasks {user_id}, {stock_id}")
 
     result = []
     
@@ -84,6 +84,8 @@ ORDER BY
 	END,
 	category ASC
     """
+
+    print(f"select_tasks_progress {user_id}, {stock_id}")
 
     result = []
     
