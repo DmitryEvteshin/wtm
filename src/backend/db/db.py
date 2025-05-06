@@ -41,7 +41,8 @@ ORDER BY
 	END,
 	category ASC
     """
-    
+    print(f"{user_id}, {stock_id}")
+
     result = []
     
     async with conn.cursor() as cur:
