@@ -2,14 +2,14 @@
 
 from aiomysql import Connection
 
-async def get_operator_tasks_table(conn: Connection, user_id: int, stock_id: int):
+async def get_operator_tasks_table(conn: Connection, user_id: int, stock_id: int) -> list:
     
     async with conn.cursor() as cur:
         try:
             await cur.callproc("app_get_operator_task_table", [user_id, stock_id])
         except Exception as e:
             print(f"ERROR callproc \"app_get_operator_task_table\": {e}")
-    return 
+    return []
 
 async def select_tasks(conn: Connection, user_id: int, stock_id: int) -> list:
     """ получение списка заданий """
