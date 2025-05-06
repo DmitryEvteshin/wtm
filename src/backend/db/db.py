@@ -163,11 +163,12 @@ async def select_task(conn: Connection, stock_id: int, doc_id: int, material_id:
     if task is None:
         return task
     
-    try:
-        await cur.callproc("app_get_task_table", [stock_id, material_id])
-    except Exception as e:
-        print(f"ERROR callproc \"app_get_task_table\": {e}")
-        return task    
+    async with conn.cursor() as cur:
+        try:
+            await cur.callproc("app_get_task_table", [stock_id, material_id])
+        except Exception as e:
+            print(f"ERROR callproc \"app_get_task_table\": {e}")
+            return None    
 
     task["task_weights"] = await get_task_weights(conn, doc_id, material_id, user_id)
     task["processing_types"] = await select_processing_types(conn)
