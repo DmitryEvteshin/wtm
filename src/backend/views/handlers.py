@@ -89,8 +89,6 @@ async def update_job_status_handler(request: Request):
     net_weight_fact = job.get("netWeightFact", None)
     add_processing_id = job.get("processingID", 0)
 
-    print(f"{doc_id}, {material_id}, {tara_id}, {net_weight_fact}, {add_processing_id}, {status}")
-
     if doc_id is None or material_id is None or tara_id is None or status is None or net_weight_fact is None:
         raise HTTPBadRequest()
     async with request.app["db"].acquire() as conn:
