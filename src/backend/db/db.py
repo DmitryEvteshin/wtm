@@ -2,16 +2,6 @@
 
 from aiomysql import Connection
 
-async def get_operator_tasks_table(conn: Connection, user_id: int, stock_id: int):
-    
-#    async with conn.cursor() as cur:
-#        try:
-#            await cur.callproc("app_get_operator_task_table", [user_id, stock_id])
-#        except Exception as e:
-#            print(f"ERROR callproc \"app_get_operator_task_table\": {e}")
-    print(f"select_tasks {user_id}, {stock_id}")
-    return
-
 async def select_tasks(conn: Connection, user_id: int, stock_id: int) -> list:
     """ получение списка заданий """
 
@@ -42,7 +32,6 @@ ORDER BY
 	END,
 	category ASC
     """
-    print(f"select_tasks {user_id}, {stock_id}")
 
     result = []
     
@@ -85,8 +74,6 @@ ORDER BY
 	END,
 	category ASC
     """
-
-    print(f"select_tasks_progress {user_id}, {stock_id}")
 
     result = []
     
@@ -163,6 +150,9 @@ async def select_processing_types(conn: Connection):
 
 async def select_task(conn: Connection, stock_id: int, doc_id: int, material_id: int, user_id: int):
     """ получение позиций задания """
+
+    print(f"{doc_id}, {material_id}")
+
     async with conn.cursor() as cur:
         try:
             await cur.callproc("app_get_task_table", [doc_id, material_id])
@@ -174,8 +164,12 @@ async def select_task(conn: Connection, stock_id: int, doc_id: int, material_id:
     if task is None:
         return task
 
+    print(f"{doc_id}, {material_id}")
+
     task["task_weights"] = await get_task_weights(conn, doc_id, material_id, user_id)
     task["processing_types"] = await select_processing_types(conn)
+
+
 
     q = """
 SELECT 

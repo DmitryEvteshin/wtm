@@ -3,7 +3,7 @@ import pathlib
 from aiohttp.web import Application, FileResponse, Request
 
 from .handlers import (
-    change_password_handler, get_stocks, prepare_task_table, get_task,
+    change_password_handler, get_stocks, get_task,
     get_tasks, login_handler, rest_gross_weight,
     tasks_progress, update_job_status_handler,
     update_jobs_status_handler)
@@ -37,7 +37,6 @@ def setup_handlers(app: Application):
         ("GET", "/api/stocks", get_stocks, "get_stocks"),
         ("GET", "/api/stock/{stockID}/tasks", get_tasks, "get_tasks"),
         ("GET", "/api/stock/{stockID}/tasks_progress", tasks_progress, "tasks_progress"),
-        ("GET", "/api/stock/{stockID}/prepare_task_table", prepare_task_table, "prepare_task_table"),
         ("GET", "/api/stock/{stockID}/task/{taskID}/material/{materialID}",
          get_task, "get_task"),
         ("PUT", "/api/rest_gross_weight", rest_gross_weight, "rest_gross_weight")

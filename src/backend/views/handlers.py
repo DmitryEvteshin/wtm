@@ -1,5 +1,5 @@
 from aiohttp.web import HTTPBadRequest, HTTPForbidden, HTTPCreated, HTTPNotFound, Request
-from db import (check_user, get_operator_tasks_table, select_task, select_tasks, change_password,
+from db import (check_user, select_task, select_tasks, change_password,
                 select_stocks, update_job_status, select_tasks_progress, update_rest_gross_weight
                 )
 from utils import jsonify
@@ -41,14 +41,6 @@ async def get_stocks(request: Request):
         stocks = await select_stocks(conn, request.user_id)
     return await jsonify(stocks, request)
 
-
-async def prepare_task_table(request: Request):
-    stock_id = request.match_info.get("stockID", None)
-    if stock_id is None:
-        raise HTTPBadRequest()
-    async with request.app["db"].acquire() as conn:
-        await get_operator_tasks_table(conn, request.user_id, stock_id)
-    return
 
 async def get_tasks(request: Request):
     """ получение списка заданий """
