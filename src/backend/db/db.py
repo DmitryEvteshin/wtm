@@ -346,6 +346,8 @@ async def update_job_status(conn: Connection, doc_id: int, user_id: int, materia
 #             print(f"ERROR callproc \"update_next_process\": {e}")
 #     return
 
+    print(f"{doc_id}, {user_id}, {material_id}, {tara_id}, {net_weight_fact}, {add_processing_id}, {status}")
+
     async with conn.cursor() as cur:
         try:
             await cur.callproc("app_update_job_status", [doc_id, user_id, material_id, tara_id, net_weight_fact, add_processing_id, status])
