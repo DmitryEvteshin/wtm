@@ -167,33 +167,23 @@ async def select_task(conn: Connection, stock_id: int, doc_id: int, material_id:
 
     q = """
 SELECT 
-	m.material
-	,s_material AS material_id
-	, s.tare_id
+	material
+	, material_id
+	, tare_id
 	, tare_mark
 	, tare_type
-	, tare.weight AS tara_weight
-	, pti.category
-	, 0 AS rest_gross_weight
-	, task_tare_amount_for_document AS task_tare_amount
-	, task_net_weight_for_document AS task_net_weight
-	, fact_net_weight_for_document AS net_weight_fact
+	, tara_weight
+	, category
+	, rest_gross_weight
+	, task_tare_amount
+	, task_net_weight
+	, net_weight_fact
 	, add_processing_id
-	, IF(fact_net_weight_for_document > 0, 1, 0) AS done
+	, done
 	FROM
 	(
-		SELECT * FROM production_task_items
+		SELECT * FROM app_production_task_items
 	) pti
-LEFT JOIN material AS m ON m.id = pti.s_material
-LEFT JOIN selection AS s ON s.id = pti.selection_id
-LEFT JOIN material_data AS md ON md.key_material = pti.key_material
-LEFT JOIN tare ON tare.id = md.tare_type
-WHERE
-    s_material = %(material_id)s
-ORDER BY
-    m.material
-    , s.tare_id
-
     """
 
     jobs = []
