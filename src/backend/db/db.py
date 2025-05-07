@@ -187,11 +187,8 @@ SELECT
     """
 
     jobs = []
-    query_args = {
-        "material_id": material_id
-    }
     async with conn.cursor() as cur:
-        await cur.execute(q, query_args)
+        await cur.execute(q)
         jobs = await cur.fetchall()
     task["jobs"] = jobs
     return task
