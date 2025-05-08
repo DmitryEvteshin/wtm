@@ -92,6 +92,7 @@ onBeforeUnmount(() => {
 const processingChange = () => store.stopAutofetch();
 /** Запрос к API на обновление статуса задания */
 const updateJobStatus = async (job: frontend.IJob, weight: number) => {
+    print(job)
     try {
         const realNetWeightFact = weight - job.tara_weight;
         const alertWeight = job.net_weight_fact > 0 ? (remainingWeight.value[job.category] + (job.net_weight_fact-realNetWeightFact)) : (remainingWeight.value[job.category] - realNetWeightFact);
