@@ -54,8 +54,8 @@ export default defineStore("app_store", () => {
         return api.changePasswor(payload).finally(() => loading.value = false);
     };
     /** изменение статуса "выполнено" для задания в задаче */
-    const updateJobStatus = (taskID: number, materialID: number, taraID: number, netWeightFact: number, add_processing_id: number, done: boolean) => {
-        console.log(netWeightFact)
+    const updateJobStatus = (taskID: number, materialID: number, taraID: number, netWeightFact: number, restGrossWeight: number, add_processing_id: number, done: boolean) => {
+        console.log(restGrossWeight)
         return api.updateJobStatus(taskID, materialID, taraID, netWeightFact, add_processing_id, done);
     };
 
