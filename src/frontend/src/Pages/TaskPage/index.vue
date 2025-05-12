@@ -96,6 +96,8 @@ const updateJobStatus = async (job: frontend.IJob, weight: number) => {
     console.log(weight)
     try {
         const realNetWeightFact = weight - job.tara_weight;
+        const realRGW = job.rest_gross_weight - realNetWeightFact
+        console.log(realRGW)
         const alertWeight = job.net_weight_fact > 0 ? (remainingWeight.value[job.category] + (job.net_weight_fact-realNetWeightFact)) : (remainingWeight.value[job.category] - realNetWeightFact);
         const newStatus = !job.done;
         if (newStatus === true && alertWeight < 0) {
