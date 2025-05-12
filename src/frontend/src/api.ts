@@ -107,13 +107,14 @@ class ClientAPI {
         return body;
     }
 
-    async updateJobStatus(taskID: number, materialID: number, taraID: number, netWeightFact: number, processingID: number, done: boolean) {
+    async updateJobStatus(taskID: number, materialID: number, taraID: number, netWeightFact: number, restGrossWeight: number, processingID: number, done: boolean) {
         const url = `${BASE_URL}/${JOB}`;
         const payload = {
             taskID,
             materialID,
             taraID,
             netWeightFact,
+            restGrossWeight,
             processingID,
             done
         };

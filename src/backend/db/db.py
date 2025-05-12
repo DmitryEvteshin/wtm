@@ -296,7 +296,7 @@ ORDER BY
     return stocks
 
 
-async def update_job_status(conn: Connection, doc_id: int, user_id: int, material_id: int, tara_id: int, net_weight_fact: float, add_processing_id: int, status: bool):
+async def update_job_status(conn: Connection, doc_id: int, user_id: int, material_id: int, tara_id: int, net_weight_fact: float, rest_gross_weight: float, add_processing_id: int, status: bool):
 
 #     q = """
 # UPDATE
@@ -337,7 +337,7 @@ async def update_job_status(conn: Connection, doc_id: int, user_id: int, materia
 
     async with conn.cursor() as cur:
         try:
-            await cur.callproc("app_update_job_status", [doc_id, user_id, material_id, tara_id, net_weight_fact, add_processing_id, status])
+            await cur.callproc("app_update_job_status", [doc_id, user_id, material_id, tara_id, net_weight_fact, rest_gross_weight, add_processing_id, status])
         except Exception as e:
             print(f"ERROR callproc \"app_update_job_status\": {e}")
     return
