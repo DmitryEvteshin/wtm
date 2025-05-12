@@ -87,9 +87,8 @@ async def update_job_status_handler(request: Request):
     tara_id = job.get("taraID", None)
     status = job.get("done", None)
     net_weight_fact = job.get("netWeightFact", None)
+    rest_gross_weight = job.get("restGrossWeight", None)
     add_processing_id = job.get("processingID", 0)
-
-    print(job)
 
     if doc_id is None or material_id is None or tara_id is None or status is None or net_weight_fact is None:
         raise HTTPBadRequest()
@@ -102,6 +101,7 @@ async def update_job_status_handler(request: Request):
                 material_id,
                 tara_id,
                 float(net_weight_fact),
+                float(rest_gross_weight),
                 int(add_processing_id),
                 status)  # pylint: disable=too-many-function-args
         except Exception as exc:
