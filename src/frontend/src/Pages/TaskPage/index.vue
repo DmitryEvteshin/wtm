@@ -94,7 +94,7 @@ const processingChange = () => store.stopAutofetch();
 const updateJobStatus = async (job: frontend.IJob, weight: number) => {
     try {
         const realNetWeightFact = weight - job.tara_weight;
-        const realRGW = job.rest_gross_weight == weight ? 0 : job.rest_gross_weight - realNetWeightFact 
+        const realRestGrossWeight = job.rest_gross_weight == weight ? 0 : job.rest_gross_weight - realNetWeightFact 
         const alertWeight = job.net_weight_fact > 0 ? (remainingWeight.value[job.category] + (job.net_weight_fact-realNetWeightFact)) : (remainingWeight.value[job.category] - realNetWeightFact);
         const newStatus = !job.done;
         if (newStatus === true && alertWeight < 0) {
@@ -114,7 +114,7 @@ const updateJobStatus = async (job: frontend.IJob, weight: number) => {
                 return;
             }
         }
-        await store.updateJobStatus(props.taskID, props.materialID, job.tare_id, realNetWeightFact, realRGW, job.add_processing_id, newStatus);
+        await store.updateJobStatus(props.taskID, props.materialID, job.tare_id, realNetWeightFact, realRestGrossWeight, job.add_processing_id, newStatus);
         await store.fetchTask(props.stockID, props.taskID, props.materialID, queryParams.tareType);
         const readebleStatus = newStatus === true ? "готово" : "не выполнено";
         const message = `Тара с маркировкой "${job.tare_mark}" (тара ${job.tare_id}) - статус изменен на "${readebleStatus}"`;
