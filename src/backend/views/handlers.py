@@ -112,9 +112,6 @@ async def update_job_status_handler(request: Request):
 
 async def update_jobs_status_handler(request: Request):
     payload: dict = await request.json()
-
-    print(payload)
-
     doc_id = payload.get("taskID", None)
     material_id = payload.get("materialID", None)
     jobs: list[dict] = payload.get("jobs", [])
@@ -139,23 +136,22 @@ async def update_jobs_status_handler(request: Request):
 
 async def rest_gross_weight(request: Request):
     job = await request.json()
-    # print(job)
     # return HTTPCreated()
     doc_id = job.get("taskID", None)
     material_id = job.get("material_id", None)
     tare_id = job.get("tare_id", None)
     gross_weight = job.get("gross_weight", None)
-    if doc_id is None or material_id is None or tare_id is None or gross_weight is None:
-        raise HTTPBadRequest()
-    async with request.app["db"].acquire() as conn:
-        try:
-            await update_rest_gross_weight(
-                conn,
-                doc_id,
-                material_id,
-                tare_id,
-                gross_weight)
-        except Exception as exc:
-            raise HTTPBadRequest(
-                body=str(exc))  # pylint: disable=raise-missing-from
+    # if doc_id is None or material_id is None or tare_id is None or gross_weight is None:
+    #     raise HTTPBadRequest()
+    # async with request.app["db"].acquire() as conn:
+    #     try:
+    #         await update_rest_gross_weight(
+    #             conn,
+    #             doc_id,
+    #             material_id,
+    #             tare_id,
+    #             gross_weight)
+    #     except Exception as exc:
+    #         raise HTTPBadRequest(
+    #             body=str(exc))  # pylint: disable=raise-missing-from
     return HTTPCreated()
