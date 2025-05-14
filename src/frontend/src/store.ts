@@ -55,7 +55,6 @@ export default defineStore("app_store", () => {
     };
     /** изменение статуса "выполнено" для задания в задаче */
     const updateJobStatus = (taskID: number, materialID: number, taraID: number, netWeightFact: number, restGrossWeight: number, add_processing_id: number, done: boolean) => {
-        console.log(restGrossWeight)
         return api.updateJobStatus(taskID, materialID, taraID, netWeightFact, restGrossWeight, add_processing_id, done);
     };
 

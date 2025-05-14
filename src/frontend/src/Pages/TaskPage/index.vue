@@ -286,6 +286,7 @@ const checkAll = async (status: boolean) => {
             tara_id: job.tare_id,
             add_processing_id: job.add_processing_id,
             net_weight_fact: status === true ? job.rest_gross_weight - job.tara_weight : 0,
+            rest_gross_weight: 0,
             status: status
         }))
     };
