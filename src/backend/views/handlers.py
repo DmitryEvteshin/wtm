@@ -82,9 +82,6 @@ async def get_task(request: Request):
 
 async def update_job_status_handler(request: Request):
     job = await request.json()
-
-    print(job)
-
     doc_id = job.get("taskID", None)
     material_id = job.get("materialID", None)
     tara_id = job.get("taraID", None)

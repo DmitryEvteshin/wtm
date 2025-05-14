@@ -60,6 +60,7 @@ export default defineStore("app_store", () => {
     };
 
     const updateJobsStatus = (payload: any) => {
+        console.log(payload)
         loading.value = true;
         return api.updateJobsStatus(payload).finally(() => {
             loading.value = false;
