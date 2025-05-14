@@ -191,6 +191,9 @@ SELECT
         await cur.execute(q)
         jobs = await cur.fetchall()
     task["jobs"] = jobs
+
+    print(task)
+
     return task
 
 
