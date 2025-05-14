@@ -112,6 +112,9 @@ async def update_job_status_handler(request: Request):
 
 async def update_jobs_status_handler(request: Request):
     payload: dict = await request.json()
+
+    print(payload)
+    
     doc_id = payload.get("taskID", None)
     material_id = payload.get("materialID", None)
     jobs: list[dict] = payload.get("jobs", [])
