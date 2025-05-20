@@ -225,6 +225,7 @@ FROM
 
 async def check_material_item(conn: Connection, material_id: int, tare_id: int, doc_id: int):
     
+    print(material_id)
     q = """
 SELECT	@next_doc_number_list AS next_doc_number_list
     """
@@ -241,6 +242,9 @@ SELECT	@next_doc_number_list AS next_doc_number_list
         next_doc_list = await cur.fetchall()
         if isinstance(next_doc_list, tuple):
             next_doc_list = []
+
+    print(next_doc_list)
+            
     return next_doc_list
 
 
