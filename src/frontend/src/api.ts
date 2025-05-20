@@ -10,7 +10,7 @@ const MATERIAL = "material";
 const JOB = "job";
 const RGW = "rest_gross_weight";
 const TASKS_PROGRESS = "tasks_progress";
-
+const CHECK_ITEM = "check_item";
 
 type user = {
     can_login: number;
@@ -140,6 +140,26 @@ class ClientAPI {
             throw new Error(await response.text());
         }
         return;
+    }
+
+    async checkMaterialItem(materialID: number, taraID: number, taskID: number) {
+        const url = `${BASE_URL}/${CHECK_ITEM}`;
+        const payload = {
+            materialID,
+            taraID,
+            taskID,
+        };
+
+        const headers = {
+            "Content-Type": "application/json",
+            ...this.requestHeaders()
+        };
+        const response = await fetch(url, { method: "POST", headers, body: JSON.stringify(payload) });
+        if (response.status !== 201) {
+            throw new Error(await response.text());
+        }
+        const body = await response.json();
+        return body;
     }
 
     async updateRestGrossWeight(taskID: number, job: frontend.IJob) {

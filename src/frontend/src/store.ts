@@ -58,6 +58,10 @@ export default defineStore("app_store", () => {
         return api.updateJobStatus(taskID, materialID, taraID, netWeightFact, restGrossWeight, add_processing_id, done);
     };
 
+    const checkMaterialItem = (materialID: number, taraID: number, taskID: number) => {
+        return api.checkMaterialItem(materialID, taraID, taskID);
+    };
+
     const updateJobsStatus = (payload: any) => {
         loading.value = true;
         return api.updateJobsStatus(payload).finally(() => {
@@ -110,6 +114,7 @@ export default defineStore("app_store", () => {
         fetchStocks,
         fetchTasksList,
         fetchTask,
+        checkMaterialItem,
         updateJobStatus,
         updateJobsStatus,
         updateRestGrossWeight,

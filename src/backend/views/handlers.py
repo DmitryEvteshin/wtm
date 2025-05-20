@@ -1,6 +1,7 @@
 from aiohttp.web import HTTPBadRequest, HTTPForbidden, HTTPCreated, HTTPNotFound, Request
 from db import (check_user, select_task, select_tasks, change_password,
-                select_stocks, update_job_status, select_tasks_progress, update_rest_gross_weight
+                select_stocks, update_job_status, select_tasks_progress, update_rest_gross_weight,
+                check_material_item
                 )
 from utils import jsonify
 
@@ -108,6 +109,27 @@ async def update_job_status_handler(request: Request):
             raise HTTPBadRequest(
                 body=str(exc))  # pylint: disable=raise-missing-from
     return HTTPCreated()
+
+async def check_material_item_handler(request: Request):
+    item = await request.json()
+    material_id = item.get("materialID", None)
+    tara_id = item.get("taraID", None)
+    doc_id = item.get("taskID", None)
+
+    if doc_id is None or material_id is None or tara_id is None:
+        raise HTTPBadRequest()
+    async with request.app["db"].acquire() as conn:
+        try:
+            await check_material_item(
+                conn,
+                material_id,
+                tara_id,
+                doc_id)  # pylint: disable=too-many-function-args
+        except Exception as exc:
+            raise HTTPBadRequest(
+                body=str(exc))  # pylint: disable=raise-missing-from
+    return HTTPCreated()
+
 
 
 async def update_jobs_status_handler(request: Request):

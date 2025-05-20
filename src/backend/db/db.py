@@ -223,6 +223,27 @@ FROM
             task_weights = []
     return task_weights
 
+async def check_material_item(conn: Connection, material_id: int, tare_id: int, doc_id: int):
+    
+    q = """
+SELECT	@next_doc_number_list AS next_doc_number_list
+    """
+    next_doc_list: list[dict] = []
+
+    async with conn.cursor() as cur:
+        try:
+            await cur.callproc("check_material_next_process", [material_id, tare_id, doc_id])
+        except Exception as e:
+            print(f"ERROR callproc \"check_material_next_process\": {e}")
+            return next_doc_list    
+
+        await cur.execute(q)
+        next_doc_list = await cur.fetchall()
+        if isinstance(next_doc_list, tuple):
+            next_doc_list = []
+    return next_doc_list
+
+
 
 async def check_user(conn: Connection, login: str, password_hash: str):
     """ проверка авторизации пользователя """
