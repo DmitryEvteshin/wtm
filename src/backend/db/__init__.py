@@ -34,4 +34,5 @@ __all__ = (
     "check_can_login",
     "select_tasks_progress",
     "update_rest_gross_weight",
+    "check_material_item"
 )
