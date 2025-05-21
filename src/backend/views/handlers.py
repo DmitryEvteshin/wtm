@@ -78,6 +78,7 @@ async def get_task(request: Request):
         task = await select_task(conn, int(stock_id), int(doc_id), int(material_id), request.user_id)
         if task is None:
             raise HTTPNotFound()
+        print(task)
     return await jsonify(task, request)
 
 
