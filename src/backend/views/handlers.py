@@ -131,8 +131,7 @@ async def check_material_item_handler(request: Request):
             raise HTTPBadRequest(
                 body=str(exc))  # pylint: disable=raise-missing-from
         print(f"doc_list: {doc_list}")
-    #return await jsonify(doc_list, request)
-    return doc_list
+    return await jsonify(doc_list, request)
 
 async def update_jobs_status_handler(request: Request):
     payload: dict = await request.json()
