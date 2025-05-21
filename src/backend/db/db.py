@@ -225,7 +225,6 @@ FROM
 
 async def check_material_item(conn: Connection, material_id: int, tare_id: int, doc_id: int):
     
-    print(material_id)
     q = """
 SELECT	@next_doc_number_list AS next_doc_number_list
     """
