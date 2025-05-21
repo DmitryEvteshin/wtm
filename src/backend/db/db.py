@@ -242,9 +242,6 @@ SELECT	@next_doc_number_list AS next_doc_number_list
         if isinstance(next_doc_list, tuple):
             next_doc_list = []
 
-#    print(next_doc_list)
-#    print(next_doc_list[0].get('next_doc_number_list'))
-            
     return next_doc_list
 
 

@@ -97,29 +97,16 @@ const updateJobStatus = async (job: frontend.IJob, weight: number) => {
         const realRestGrossWeight = job.rest_gross_weight == weight ? 0 : job.rest_gross_weight - realNetWeightFact 
         const alertWeight = job.net_weight_fact > 0 ? (remainingWeight.value[job.category] + (job.net_weight_fact-realNetWeightFact)) : (remainingWeight.value[job.category] - realNetWeightFact);
         const newStatus = !job.done;
+
         if (newStatus === false) {
-            console.log(props.taskID, props.materialID, job.tare_id)
-
-            await store.checkMaterialItem(props.materialID, job.tare_id, props.taskID);
-
-            console.log(props.taskID, props.materialID, job.tare_id)
-
-            // try {
-            //     await ElMessageBox.confirm(
-            //         "Предупреждение",
-            //         {
-            //             message: `Невозможно отменить выполнение. Позиция ${job.tare_id} передана в производство`,
-            //             confirmButtonText: "Подтверждение",
-            //             cancelButtonText: "Отмена",
-            //             type: "warning"
-            //         }
-            //     );
-            // } catch (error) {
-            //     // eslint-disable-next-line
-            //     console.warn(error);
-            //     return;
-            // }
+            const check_item = await store.checkMaterialItem(props.materialID, job.tare_id, props.taskID);
+            if (check_item[0].next_doc_number_list != "") {
+                const message = `Невозможно отменить выполнение. Позиция ${job.tare_id} передана в производство (${check_item[0].next_doc_number_list})`    
+                ElMessageBox.alert(message, "Предупреждение", { confirmButtonText: "OK" })
+                return;
+            }
         }
+
         if (newStatus === true && alertWeight < 0) {
             try {
                 await ElMessageBox.confirm(

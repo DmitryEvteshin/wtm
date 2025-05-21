@@ -155,10 +155,12 @@ class ClientAPI {
             ...this.requestHeaders()
         };
         const response = await fetch(url, { method: "POST", headers, body: JSON.stringify(payload) });
-        if (response.status !== 201) {
-            throw new Error(await response.text());
-        }
+        // if (response.status !== 201) {
+        //     throw new Error(await response.text());
+        // }
+
         const body = await response.json();
+
         return body;
     }
 

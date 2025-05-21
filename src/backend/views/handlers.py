@@ -130,7 +130,6 @@ async def check_material_item_handler(request: Request):
         except Exception as exc:
             raise HTTPBadRequest(
                 body=str(exc))  # pylint: disable=raise-missing-from
-        print(f"doc_list: {doc_list}")
     return await jsonify(doc_list, request)
 
 async def update_jobs_status_handler(request: Request):

@@ -60,10 +60,7 @@ export default defineStore("app_store", () => {
     };
 
     const checkMaterialItem = (materialID: number, taraID: number, taskID: number) => {
-        console.log('checkMaterialItem');
-        return api.checkMaterialItem(materialID, taraID, taskID)
-            .then(body => doc_list.value = body)
-            .then(body => console.log(body));
+        return api.checkMaterialItem(materialID, taraID, taskID).then(body => doc_list.value = body);
     };
 
     const updateJobsStatus = (payload: any) => {
