@@ -116,13 +116,13 @@ async def check_material_item_handler(request: Request):
     tara_id = item.get("taraID", None)
     doc_id = item.get("taskID", None)
 
-    doc_list_string = ""
+    doc_list = []
 
     if doc_id is None or material_id is None or tara_id is None:
         raise HTTPBadRequest()
     async with request.app["db"].acquire() as conn:
         try:
-            doc_list_string = await check_material_item(
+            doc_list = await check_material_item(
                 conn,
                 material_id,
                 tara_id,
@@ -130,8 +130,8 @@ async def check_material_item_handler(request: Request):
         except Exception as exc:
             raise HTTPBadRequest(
                 body=str(exc))  # pylint: disable=raise-missing-from
-        print(f"doc_list_string: {doc_list_string}")
-    return doc_list_string
+        print(f"doc_list: {doc_list}")
+    return await jsonify(doc_list, request)
 
 async def update_jobs_status_handler(request: Request):
     payload: dict = await request.json()
