@@ -59,6 +59,7 @@ export default defineStore("app_store", () => {
     };
 
     const checkMaterialItem = (materialID: number, taraID: number, taskID: number) => {
+        console.log(api.checkMaterialItem(materialID, taraID, taskID));
         return api.checkMaterialItem(materialID, taraID, taskID);
     };
 
