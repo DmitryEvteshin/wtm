@@ -101,4 +101,10 @@ declare namespace frontend {
         newPassword: string;
         repetitionPassword: string;
     }
+
+    export type IDocList = {
+        next_doc_number_list: string;
+    }
+
+
 }

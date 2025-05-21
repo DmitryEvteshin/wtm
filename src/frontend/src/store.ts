@@ -23,6 +23,7 @@ export default defineStore("app_store", () => {
     const tasks_progress = shallowRef<Array<frontend.ITaskL>>([]);
     /** задание */
     const task = ref<frontend.ITaskP | null>(null);
+    const doc_list = shallowRef<Array<frontend.IDocList>>([]);
 
 
     const doLogin = (payload: frontend.ILoginPayload) => api.doLogin(payload);
@@ -59,8 +60,8 @@ export default defineStore("app_store", () => {
     };
 
     const checkMaterialItem = (materialID: number, taraID: number, taskID: number) => {
-        console.log(api.checkMaterialItem(materialID, taraID, taskID));
-        return api.checkMaterialItem(materialID, taraID, taskID);
+        console.log('checkMaterialItem');
+        return api.checkMaterialItem(materialID, taraID, taskID).then(body => doc_list.value = body);
     };
 
     const updateJobsStatus = (payload: any) => {
